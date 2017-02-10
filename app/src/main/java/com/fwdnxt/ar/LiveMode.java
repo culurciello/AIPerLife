@@ -14,7 +14,6 @@ public class LiveMode{
 	protected static CreateGame context;
 	Bitmap bitmap;
     YuvImage yuv;
-	boolean learnermode;
 	float[][] protos = new float[5][];
 	int saveproto = -1;
 
@@ -28,9 +27,8 @@ public class LiveMode{
 	 *
 	 * @param context
 	 */
-	public LiveMode(Context context, boolean learner) {
+	public LiveMode(Context context) {
 		this.context = (CreateGame) context;
-		learnermode = learner;
 	}
 
 	/**
@@ -97,45 +95,23 @@ public class LiveMode{
 		int pixels[] = new int[224 * 224];
 		bitmap.getPixels(pixels, 0, 224, 0, 0, 224, 224);
 		float percentages[] = nativeAPI.processImage(pixels);
-		if(learnermode) {
-			if(saveproto >= 0) {
-				protos[saveproto] = percentages;
-				context.SetProtoImage(saveproto, bitmap);
-				saveproto = -1;
-			}
-			float min = 2;
-			int best = -1;
-			for(int i = 0; i < 5; i++)
-			{
-				if(protos[i] != null) {
-					float d = distance(protos[i], percentages);
-					if (d < min) {
-						best = i;
-						min = d;
-					}
-				}
-			}
-			context.ProtoFound(best);
-		} else {
-			max[0] = 0;
-			max[1] = 0;
-			max[2] = 0;
-			maxPos[0] = 0;
-			maxPos[1] = 0;
-			maxPos[2] = 0;
-			for (int j = 0; j < percentages.length; j++) {
-				if (percentages[j] > max[0]) {
-					maxPos[0] = j + 1;
-					max[0] = percentages[j];
-				} else if (percentages[j] > max[1]) {
-					maxPos[1] = j + 1;
-					max[1] = percentages[j];
-				} else if (percentages[j] > max[2]) {
-					maxPos[2] = j + 1;
-					max[2] = percentages[j];
-				}
-			}
-
+		if (saveproto >= 0) {
+			protos[saveproto] = percentages;
+			context.SetProtoImage(saveproto, bitmap);
+			saveproto = -1;
 		}
+		float min = 2;
+		int best = -1;
+		for (int i = 0; i < 5; i++) {
+			if (protos[i] != null) {
+				float d = distance(protos[i], percentages);
+				if (d < min) {
+					best = i;
+					min = d;
+				}
+			}
+		}
+		context.ProtoFound(best);
 	}
+
 }

@@ -1,8 +1,5 @@
 package com.fwdnxt.ar;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -13,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.SurfaceHolder;
@@ -23,7 +19,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.util.List;
 
 public class CreateGame extends Activity {
@@ -40,12 +35,10 @@ public class CreateGame extends Activity {
     static int currentCameraId;
     FrameLayout myCameraPreview;
 
-    Button myButton;
     Button[] protos;
     BitmapDrawable[][] protobmps;
     TextView fpsField;
-    TextView live;
-    View recordingState;
+
 
     RelativeLayout mainlayout;
 
@@ -217,7 +210,7 @@ public class CreateGame extends Activity {
             // TODO Auto-generated method stub
         }
 
-        LiveMode liveMode = new LiveMode(CreateGame.this, learner);
+        LiveMode liveMode = new LiveMode(CreateGame.this);
 
         @Override
         public void onPreviewFrame(byte[] data, Camera arg1) {
