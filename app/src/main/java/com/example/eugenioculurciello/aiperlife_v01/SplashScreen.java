@@ -1,3 +1,5 @@
+// from: https://www.bignerdranch.com/blog/splash-screens-the-right-way/
+
 package com.example.eugenioculurciello.aiperlife_v01;
 
 import android.content.Intent;
@@ -15,5 +17,3 @@ public class SplashScreen extends AppCompatActivity {
         finish();
     }
 }
-
-// from: https://www.bignerdranch.com/blog/splash-screens-the-right-way/
