@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:baselineAligned="false">
+
+    <RelativeLayout
+        android:id="@+id/background"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@+id/surface_camera"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.85"
+            android:scaleType="fitXY" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="2dp"
+            android:alpha=".85"
+            android:background="@drawable/blur5" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="fill_parent"
+            android:layout_height="95dp"
+            android:layout_alignParentBottom="true"
+            android:alpha=".85"
+            android:background="@drawable/blur5" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="100dp"
+            >
+            <Button
+                android:id="@+id/proto1"
+                android:text="1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#FFFFFF"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless" />
+            <Button
+                android:id="@+id/proto2"
+                android:text="2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#FFFFFF"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless" />
+            <Button
+                android:id="@+id/proto3"
+                android:text="3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#FFFFFF"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless" />
+            <Button
+                android:id="@+id/proto4"
+                android:text="4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#FFFFFF"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless" />
+            <Button
+                android:id="@+id/proto5"
+                android:text="5"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#FFFFFF"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/fps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/buttonstart"
+            android:layout_alignBottom="@+id/buttonstart"
+            android:layout_alignRight="@+id/camera"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="#FFFFFF"
+            tools:ignore="UnknownId" />
+
+        <View
+            android:id="@+id/bar"
+            android:layout_width="40dp"
+            android:layout_height="1.5dp"
+            android:layout_alignTop="@+id/view2"
+            android:layout_centerHorizontal="true"
+            android:background="#FCC200" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>
+
+

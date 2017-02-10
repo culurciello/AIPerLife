@@ -8,4 +8,11 @@
     <string name="models">Change Model</string>
     <string name="categorys">View Categories</string>
 
+    <string name="title_activity_create_game">CreateGame</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="btn_createGame">create game</string>
+    <string name="btn_playGame">play game</string>
+
 </resources>

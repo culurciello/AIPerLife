@@ -11,10 +11,9 @@ import java.io.ByteArrayOutputStream;
 
 public class LiveMode{
 	
-	protected static MainActivity context;
+	protected static CreateGame context;
 	Bitmap bitmap;
     YuvImage yuv;
-	String detection1,detection2,detection3;
 	boolean learnermode;
 	float[][] protos = new float[5][];
 	int saveproto = -1;
@@ -30,7 +29,7 @@ public class LiveMode{
 	 * @param context
 	 */
 	public LiveMode(Context context, boolean learner) {
-		this.context = (MainActivity) context;
+		this.context = (CreateGame) context;
 		learnermode = learner;
 	}
 
@@ -136,12 +135,7 @@ public class LiveMode{
 					max[2] = percentages[j];
 				}
 			}
-			detection1 = Categories.get(context).getCategory(maxPos[0]);
-			detection2 = Categories.get(context).getCategory(maxPos[1]);
-			detection3 = Categories.get(context).getCategory(maxPos[2]);
-			context.resultField1.setText(detection1);
-			context.resultField2.setText(detection2);
-			context.resultField3.setText(detection3);
+
 		}
 	}
 }
