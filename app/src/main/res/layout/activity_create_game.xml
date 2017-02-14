@@ -34,12 +34,68 @@
             android:layout_alignParentBottom="true"
             android:alpha=".85"
             android:background="@drawable/blur5" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:layout_below="@+id/editTextObjectName"
+            android:layout_alignBottom="@+id/view1">
+
+            <TextView
+                android:id="@+id/fps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/buttonstart"
+                android:layout_alignBottom="@+id/buttonstart"
+                android:layout_alignRight="@+id/camera"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="#FFFFFF"
+                tools:ignore="UnknownId"
+                android:layout_weight="0.06" />
+
+            <TextView
+                android:id="@+id/category1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:layout_above="@+id/category2"
+                android:layout_alignStart="@+id/category2" />
+
+            <TextView
+                android:id="@+id/category2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:layout_above="@+id/category2"
+                android:layout_alignStart="@+id/category2" />
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:id="@+id/editTextObjectName"
+            android:layout_below="@+id/camera"
+            android:visibility="gone"
+            android:hint="Object name" />
+
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="100dp"
-            >
+            android:layout_marginBottom="21dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true">
             <Button
                 android:id="@+id/proto1"
                 android:text="1"
@@ -82,64 +138,6 @@
                 style="@android:style/Widget.DeviceDefault.Button.Borderless" />
 
         </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/view1">
-
-            <TextView
-                android:id="@+id/fps"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/buttonstart"
-                android:layout_alignBottom="@+id/buttonstart"
-                android:layout_alignRight="@+id/camera"
-                android:gravity="center_vertical|center_horizontal"
-                android:textColor="#FFFFFF"
-                tools:ignore="UnknownId" />
-
-            <TextView
-                android:id="@+id/category1"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:layout_above="@+id/category2"
-                android:layout_alignStart="@+id/category2" />
-
-            <TextView
-                android:id="@+id/category2"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:layout_above="@+id/category2"
-                android:layout_alignStart="@+id/category2" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/bar"
-            android:layout_width="40dp"
-            android:layout_height="1.5dp"
-            android:layout_alignTop="@+id/view2"
-            android:layout_centerHorizontal="true"
-            android:background="#FCC200" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:ems="10"
-            android:id="@+id/editTextObjectName"
-            android:layout_below="@+id/camera"
-            android:visibility="gone"
-            android:hint="Object name" />
 
 
     </RelativeLayout>
