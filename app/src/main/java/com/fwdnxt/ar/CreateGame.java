@@ -189,7 +189,7 @@ public class CreateGame extends Activity {
             // Take the smallest acceptable resolution
             List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
             for(Camera.Size size : previewSizes) {
-                if (size.height > imageSideNN && size.height < csize.height) {
+                if (size.height > 360 && size.height < csize.height) {
                     csize.width = size.width;
                     csize.height = size.height;
                 }
@@ -265,10 +265,9 @@ public class CreateGame extends Activity {
 
     public void ProtoFound(int idx, float distance, float max)
     {
-//        float threshold = 0.5;
-//        if(distance > max*0.5)
-//            idx = -1;
-        if(idx >= 0) {
+        float threshold = (float) 0.5;
+        if(distance < max*threshold)
+        {
             resultField1.setText(objectnames[idx]);
             resultField2.setText(String.format("Distance: %.3f", distance));
         } else {
