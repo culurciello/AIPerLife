@@ -2,11 +2,11 @@ package com.fwdnxt.ar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
@@ -17,11 +17,12 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import java.util.List;
 
 public class CreateGame extends Activity {
@@ -31,6 +32,7 @@ public class CreateGame extends Activity {
     boolean learner = true;
     int screenwidth, screenheight;
     int nativeerror;
+    int imageSideNN = 128; // input image size for neural network
     Camera myCamera;
 
     MyCameraSurfaceView myCameraSurfaceView;
@@ -105,14 +107,15 @@ public class CreateGame extends Activity {
         objectName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public  boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     v.setVisibility(View.GONE);
-                    recording = true;
                     objectnames[editingobject] = ((EditText)v).getText().toString();
-                    ((EditText)v).setText("");
-                    return true;
+                    v.setText("");
+                    recording = true;
+                    handled = true;
                 }
-                return false;
+                return handled;
             }
         });
     }
@@ -145,6 +148,7 @@ public class CreateGame extends Activity {
         screenheight = size.y;
 
     }
+
 
 
     /**
@@ -185,7 +189,7 @@ public class CreateGame extends Activity {
             // Take the smallest acceptable resolution
             List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
             for(Camera.Size size : previewSizes) {
-                if (size.height > 224 && size.height < csize.height) {
+                if (size.height > imageSideNN && size.height < csize.height) {
                     csize.width = size.width;
                     csize.height = size.height;
                 }
@@ -313,4 +317,5 @@ public class CreateGame extends Activity {
             }
         }
     };
+
 }

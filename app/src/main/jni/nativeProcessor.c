@@ -8,8 +8,8 @@
 #define  D(x...)  __android_log_print(ANDROID_LOG_INFO,"thnets", "%s", x)
 
 
-#define w 224
-#define h 224
+#define w 128
+#define h 128
 
 #define imw w
 #define imh h

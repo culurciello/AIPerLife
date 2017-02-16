@@ -12,16 +12,11 @@ import java.io.ByteArrayOutputStream;
 public class LiveMode{
 	
 	protected static CreateGame context;
+	int imageSideNN = 128; // input image size for neural network
 	Bitmap bitmap;
     YuvImage yuv;
 	float[][] protos = new float[5][];
 	int saveproto = -1;
-
-	float max[] = new float[3];
-	int maxPos[] = new int[3];
-	int r[];
-	int g[];
-	int b[];
 
 	/**
 	 *
@@ -88,13 +83,13 @@ public class LiveMode{
 
 	    byte[] bytes = out.toByteArray();
 	   	bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-		bitmap = getResizedBitmap(bitmap,224,224);
+		bitmap = getResizedBitmap(bitmap, imageSideNN, imageSideNN);
 
 	    // We dump the rotated Bitmap to the stream 
 	    //bitmap.compress(CompressFormat.JPEG, 20, rotatedStream);
 
-		int pixels[] = new int[224 * 224];
-		bitmap.getPixels(pixels, 0, 224, 0, 0, 224, 224);
+		int pixels[] = new int[imageSideNN * imageSideNN];
+		bitmap.getPixels(pixels, 0, imageSideNN, 0, 0, imageSideNN, imageSideNN);
 		float percentages[] = nativeAPI.processImage(pixels);
 		if (saveproto >= 0) {
 			protos[saveproto] = percentages;
@@ -114,7 +109,7 @@ public class LiveMode{
 				}
 			}
 		}
-		context.ProtoFound(best,min,max);
+		context.ProtoFound(best, min, max);
 	}
 
 }

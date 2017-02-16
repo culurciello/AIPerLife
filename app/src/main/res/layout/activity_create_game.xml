@@ -86,7 +86,8 @@
             android:id="@+id/editTextObjectName"
             android:layout_below="@+id/camera"
             android:visibility="gone"
-            android:hint="Object name" />
+            android:hint="Object name"
+            android:imeOptions="actionDone" />
 
         <LinearLayout
             android:orientation="horizontal"
