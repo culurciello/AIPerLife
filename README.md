@@ -9,3 +9,9 @@
 - Android Studio may or may not give errors. If you see an error, click the "Fix now" link, and then compile again. This may happen a few times.
 - Once all the errors have been fixed, then app can be run.
 
+
+
+# compile linked libs:
+cd ~/FWDNXT/git/AIPerLife/app/src/main
+export NDK_TOOLCHAIN_VERSION=4.9
+~/Library/Android/sdk/ndk-bundle/ndk-build V=1
