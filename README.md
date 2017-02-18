@@ -12,6 +12,10 @@
 
 
 # compile linked libs:
+
 cd ~/FWDNXT/git/AIPerLife/app/src/main
+
 export NDK_TOOLCHAIN_VERSION=4.9
+
 ~/Library/Android/sdk/ndk-bundle/ndk-build V=1
+
