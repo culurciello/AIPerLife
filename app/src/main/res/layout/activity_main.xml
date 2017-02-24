@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/createGame"
-        style="@android:style/Widget.Holo.Button"
+        style="@android:style/Widget.Holo.Button.Borderless"
         android:onClick="createGame" />
 
     <Button
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/playGame"
         android:onClick="playGame"
-        style="@android:style/Widget.Holo.Button" />
+        style="@android:style/Widget.Holo.Button.Borderless" />
 
 </LinearLayout>
 
