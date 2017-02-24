@@ -1,9 +1,9 @@
 package com.fwdnxt.ar;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 
-public class PlayGame extends ActionBarActivity {
+public class PlayGame extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
