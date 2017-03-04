@@ -1,4 +1,9 @@
-# Installation
+# AIperLife
+
+Augmented reality social game
+
+
+## Installation
 
 - manually copy: model.net categories.txt files in /sdcard/neural-nets
 
@@ -11,7 +16,7 @@
 
 
 
-# compile linked libs:
+## compile linked libs:
 
 cd ~/FWDNXT/git/AIPerLife/app/src/main
 
