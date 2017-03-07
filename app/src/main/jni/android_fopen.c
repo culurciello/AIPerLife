@@ -2,7 +2,7 @@
 #include "android_fopen.h"
 #include <errno.h>
 #include <android/log.h>
-#define  D(x...)  __android_log_print(ANDROID_LOG_INFO,"thnets", "%s", x)
+#define  D(...)  __android_log_print(ANDROID_LOG_INFO,"thnets", __VA_ARGS__)
 
 
 static int android_read(void* cookie, char* buf, int size) {
@@ -23,20 +23,18 @@ static int android_close(void* cookie) {
 }
 
 // must be established by someone else...
-AAssetManager* android_asset_manager;
+static AAssetManager* android_asset_manager;
 void android_fopen_set_asset_manager(AAssetManager* manager) {
   android_asset_manager = manager;
 }
 
 FILE* android_fopen(const char* fname, const char* mode) {
+  if(!android_asset_manager)
+    return fopen(fname, mode);
   if(mode[0] == 'w') return NULL;
-
-  //D("BRUHHHH");
 
   AAsset* asset = AAssetManager_open(android_asset_manager, fname, 0);
   if(!asset) return NULL;
-
-  //D("BRUH NUH BRUH");
 
   return funopen(asset, android_read, android_write, android_seek, android_close);
 }

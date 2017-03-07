@@ -68,7 +68,8 @@ public class CreateGame extends Activity {
      */
     public void initialize() {
         nativeAPI = new NativeProcessor();
-        nativeerror = nativeAPI.init(getAssets(), learner);
+        //nativeerror = nativeAPI.init(getAssets(), "Networks/generic", 128, learner);
+        nativeerror = nativeAPI.init(null, "/sdcard/neural-nets", 128, learner);
 
         telegrafico = Typeface.createFromAsset(getAssets(), "telegrafico.ttf");
         mainlayout = (RelativeLayout) findViewById(R.id.background);

@@ -13,8 +13,7 @@ public class LiveMode{
 	
 	protected static CreateGame context;
 	int imageSideNN = 128; // input image size for neural network
-	Bitmap bitmap;
-    YuvImage yuv;
+	int[] crop;
 	float[][] protos = new float[5][];
 	int saveproto = -1;
 
@@ -24,6 +23,7 @@ public class LiveMode{
 	 */
 	public LiveMode(Context context) {
 		this.context = (CreateGame) context;
+		crop = new int[imageSideNN*imageSideNN];
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class LiveMode{
 		Matrix matrix = new Matrix();
 		// resize the bit map
 		matrix.postScale(scaleWidth, scaleHeight);
-		matrix.postRotate(90);
+		//matrix.postRotate(90);
 		// recreate the new Bitmap
 		Bitmap resizedBitmap = Bitmap.createBitmap(image, 0, 0, width, height, matrix, false);
 		return resizedBitmap;
@@ -72,28 +72,13 @@ public class LiveMode{
 	public void startProcess(byte[] data, Camera mCamera, NativeProcessor nativeAPI) {
 
 		Camera.Parameters parameters = mCamera.getParameters();
-
 	    int width = parameters.getPreviewSize().width;
 	    int height = parameters.getPreviewSize().height;
-
-	    yuv = new YuvImage(data, parameters.getPreviewFormat(), width, height, null);
-
-	    ByteArrayOutputStream out = new ByteArrayOutputStream();
-	    yuv.compressToJpeg(new Rect(0, 0, width, height), 50, out);
-
-	    byte[] bytes = out.toByteArray();
-	   	bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-		bitmap = getResizedBitmap(bitmap, imageSideNN, imageSideNN);
-
-	    // We dump the rotated Bitmap to the stream 
-	    //bitmap.compress(CompressFormat.JPEG, 20, rotatedStream);
-
-		int pixels[] = new int[imageSideNN * imageSideNN];
-		bitmap.getPixels(pixels, 0, imageSideNN, 0, 0, imageSideNN, imageSideNN);
-		float percentages[] = nativeAPI.processImage(pixels);
+		float percentages[] = nativeAPI.processImage(data, width, height, crop);
 		if (saveproto >= 0) {
 			protos[saveproto] = percentages;
-			context.SetProtoImage(saveproto, bitmap);
+			Bitmap bmp = Bitmap.createBitmap(crop, imageSideNN, imageSideNN, Bitmap.Config.ARGB_8888);
+			context.SetProtoImage(saveproto, bmp);
 			saveproto = -1;
 		}
 		float min = 2;

@@ -24,6 +24,33 @@ int nnload_SpatialMaxPooling(struct module *mod, struct nnmodule *n)
 	return 0;
 }
 
+void pyload_SpatialMaxPooling(struct pyfunction *f)
+{
+	struct SpatialMaxPooling *p = &f->module.SpatialMaxPooling;
+	f->module.updateOutput = nn_SpatialMaxPooling_updateOutput;
+	f->module.type = MT_SpatialMaxPooling;
+	f->module.nnfree = nnfree_SpatialMaxPooling;
+	p->indices = THFloatTensor_new();
+	struct pyelement *el;
+	if( (el = findelement(f->params, "padding", 0)) && el->type == ELTYPE_INTVECT)
+	{
+		p->padH = el->ivect[0];
+		p->padW = el->ivect[1];
+	}
+	if( (el = findelement(f->params, "stride", 0)) && el->type == ELTYPE_INTVECT)
+	{
+		p->dH = el->ivect[0];
+		p->dW = el->ivect[1];
+	}
+	if( (el = findelement(f->params, "kernel_size", 0)) && el->type == ELTYPE_INTVECT)
+	{
+		p->kH = el->ivect[0];
+		p->kW = el->ivect[1];
+	}
+	if( (el = findelement(f->params, "ceil_mode", 0)) && el->type == ELTYPE_INT)
+		p->ceil_mode = el->ivalue;
+}
+
 static void nn_SpatialMaxPooling_updateOutput_frame(float *input_p, float *output_p, float *ind_p,
 	long nslices,
 	long iwidth, long iheight,
@@ -93,8 +120,8 @@ THFloatTensor *nn_SpatialMaxPooling_updateOutput(struct module *module, THFloatT
 	long nslices = input->size[1];
 	long iheight = input->size[2];
 	long iwidth = input->size[3];
-	module->SpatialMaxPooling.iwidth = iwidth;
-	module->SpatialMaxPooling.iheight = iheight;
+	module->SpatialMaxPooling.iwidth = (int)iwidth;
+	module->SpatialMaxPooling.iheight = (int)iheight;
 
 	long oheight;
 	long owidth;

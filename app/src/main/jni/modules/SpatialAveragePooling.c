@@ -18,6 +18,31 @@ int nnload_SpatialAveragePooling(struct module *mod, struct nnmodule *n)
 	return 0;
 }
 
+void pyload_SpatialAveragePooling(struct pyfunction *f)
+{
+	struct SpatialAveragePooling *p = &f->module.SpatialAveragePooling;
+	f->module.updateOutput = nn_SpatialAveragePooling_updateOutput;
+	f->module.type = MT_SpatialAveragePooling;
+	struct pyelement *el;
+	if( (el = findelement(f->params, "padding", 0)) && el->type == ELTYPE_INTVECT)
+	{
+		p->padH = el->ivect[0];
+		p->padW = el->ivect[1];
+	}
+	if( (el = findelement(f->params, "stride", 0)) && el->type == ELTYPE_INTVECT)
+	{
+		p->dH = el->ivect[0];
+		p->dW = el->ivect[1];
+	}
+	if( (el = findelement(f->params, "kernel_size", 0)) && el->type == ELTYPE_INTVECT)
+	{
+		p->kH = el->ivect[0];
+		p->kW = el->ivect[1];
+	}
+	if( (el = findelement(f->params, "ceil_mode", 0)) && el->type == ELTYPE_INT)
+		p->ceil_mode = el->ivalue;
+}
+
 THFloatTensor *nn_SpatialAveragePooling_updateOutput(struct module *module, THFloatTensor *input)
 {
 	int kW = module->SpatialAveragePooling.kW;
@@ -121,7 +146,7 @@ THFloatTensor *nn_SpatialAveragePooling_updateOutput(struct module *module, THFl
 					long wstart = xx * dW - padW;
 					long hend = fminf(hstart + kH, inputHeight + padH);
 					long wend = fminf(wstart + kW, inputWidth + padW);
-					int pool_size = (hend - hstart) * (wend - wstart);
+					long pool_size = (hend - hstart) * (wend - wstart);
 					hstart = fmaxf(hstart, 0);
 					wstart = fmaxf(wstart, 0);
 					hend = fminf(hend, inputHeight);
@@ -129,7 +154,7 @@ THFloatTensor *nn_SpatialAveragePooling_updateOutput(struct module *module, THFl
 
 					float sum = 0;
 
-					int divide_factor;
+					long divide_factor;
 					if(count_include_pad)
 						divide_factor = pool_size;
 					else

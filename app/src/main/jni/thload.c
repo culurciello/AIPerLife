@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "thnets.h"
+#include "android_fopen.h"
 
 struct thfile
 {
@@ -407,7 +408,7 @@ static int readobject(struct thfile *f, struct thobject *obj)
 
 int loadtorch(const char *path, struct thobject *obj, int longsize)
 {
-	FILE *fp = fopen(path, "rb");
+	FILE *fp = android_fopen(path, "rb");
 	if(!fp)
 		return ERR_OPENFILE;
 	struct thfile *f = malloc(sizeof(*f));
@@ -681,7 +682,7 @@ void *TableGetStorage(struct table *t, const char *name, int *nelem)
 			t->records[i].value.type == TYPE_STORAGE)
 		{
 			struct storage *tt = t->records[i].value.storage;
-			*nelem = tt->nelem;
+			*nelem =(int) tt->nelem;
 			return tt->data;
 		}
 	return 0;
@@ -788,6 +789,7 @@ void freenetwork(struct network *net)
 		if(net->modules[i].nnfree)
 			net->modules[i].nnfree(net->modules + i);
 		THFloatTensor_free(net->modules[i].output);
+		net->modules[i].output = 0;
 	}
 	free(net->modules);
 	free(net);

@@ -1,10 +1,16 @@
 #include "../thnets.h"
 
+static void nnfree_PReLU(struct module *mod)
+{
+	THFloatTensor_free(mod->PReLU.weight);
+}
+
 int nnload_PReLU(struct module *mod, struct nnmodule *n)
 {
 	struct table *t = n->table;
 	mod->type = MT_PReLU;
 	mod->updateOutput = nn_PReLU_updateOutput;
+	mod->nnfree = nnfree_PReLU;
 	struct PReLU *m = &mod->PReLU;
 	m->nOutputPlane = TableGetNumber(t, "nOutputPlane");
 	m->weight = TableGetTensor(t, "weight");
@@ -20,10 +26,10 @@ THFloatTensor *nn_PReLU_updateOutput(struct module *module, THFloatTensor *input
 	float *in = THFloatTensor_data(input);
 	float *out = THFloatTensor_data(output);
 	float *w = THFloatTensor_data(weight);
-	int bs, ks, nOutputPlane = module->PReLU.nOutputPlane;
+	long bs, ks, nOutputPlane = module->PReLU.nOutputPlane;
 	if(nOutputPlane == 0)
 	{
-		int i, n = THFloatTensor_nElement(input);
+		long i, n = THFloatTensor_nElement(input);
 		for(i = 0; i < n; i++)
 			out[i] = in[i] > 0 ? in[i] : *w*in[i];
 		return output;
@@ -46,6 +52,10 @@ THFloatTensor *nn_PReLU_updateOutput(struct module *module, THFloatTensor *input
 	case 4:
 		bs = input->size[0];
 		ks = input->size[2] * input->size[3];
+		break;
+	default:
+		ks = 0;
+		bs = 0;
 		break;
 	}
 	

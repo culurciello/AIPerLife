@@ -10,14 +10,20 @@ int nnload_CAddTable(struct module *mod, struct nnmodule *n)
 	return 0;
 }
 
+void pyload_Add(struct pyfunction *f)
+{
+	f->module.updateOutput = nn_CAddTable_updateOutput;
+	f->module.type = MT_CAddTable;
+}
+
 THFloatTensor *nn_CAddTable_updateOutput(struct module *module, THFloatTensor *input)
 {
 	THFloatTensor *output = module->output;
 	struct module *concattable_module = (struct module *)input;
-	int nelem = concattable_module->ConcatTable.nelem;
+	int nelem = concattable_module->ConcatTable.net->nelem;
 	long size[4];
 	int i, j;
-	struct module *modules = concattable_module->ConcatTable.modules;
+	struct module *modules = concattable_module->ConcatTable.net->modules;
 	// Check correctness
 	for(i = 1; i < nelem; i++)
 	{
