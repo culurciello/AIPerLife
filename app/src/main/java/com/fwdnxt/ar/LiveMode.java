@@ -2,12 +2,9 @@ package com.fwdnxt.ar;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
 import android.hardware.Camera;
-import java.io.ByteArrayOutputStream;
+import android.os.AsyncTask;
 
 public class LiveMode{
 	
@@ -64,6 +61,58 @@ public class LiveMode{
 		else return 2;
 	}
 
+	private static class MyTaskParams {
+		byte[] data;
+		Camera mCamera;
+		NativeProcessor nativeAPI;
+
+		MyTaskParams(byte[] data, Camera mCamera, NativeProcessor nativeAPI) {
+			this.data = data;
+			this.mCamera = mCamera;
+			this.nativeAPI = nativeAPI;
+		}
+	}
+
+	private class CStartProcess extends AsyncTask<MyTaskParams, Void, float[]> {
+
+		@Override
+		protected float[] doInBackground(MyTaskParams... params) {
+			byte[] data = params[0].data;
+			Camera mCamera = params[0].mCamera;
+			NativeProcessor nativeAPI = params[0].nativeAPI;
+
+			Camera.Parameters parameters = mCamera.getParameters();
+			int width = parameters.getPreviewSize().width;
+			int height = parameters.getPreviewSize().height;
+			float percentages[] = nativeAPI.processImage(data, width, height, crop);
+			return percentages;
+		}
+
+		protected void onPostExecute(float[] percentages) {
+			if (saveproto >= 0) {
+				protos[saveproto] = percentages;
+				Bitmap bmp = Bitmap.createBitmap(crop, imageSideNN, imageSideNN, Bitmap.Config.ARGB_8888);
+				context.SetProtoImage(saveproto, bmp);
+				saveproto = -1;
+			}
+			float min = 2;
+			float max = 0;
+			int best = -1;
+			for (int i = 0; i < 5; i++) {
+				if (protos[i] != null) {
+					float d = distance(protos[i], percentages);
+					if (d > max) max = d;
+					if (d < min) {
+						best = i;
+						min = d;
+					}
+				}
+			}
+			context.ProtoFound(best, min, max);
+		}
+	}
+
+
 	/**
 	 *
 	 * @param data
@@ -71,30 +120,9 @@ public class LiveMode{
 	 */
 	public void startProcess(byte[] data, Camera mCamera, NativeProcessor nativeAPI) {
 
-		Camera.Parameters parameters = mCamera.getParameters();
-	    int width = parameters.getPreviewSize().width;
-	    int height = parameters.getPreviewSize().height;
-		float percentages[] = nativeAPI.processImage(data, width, height, crop);
-		if (saveproto >= 0) {
-			protos[saveproto] = percentages;
-			Bitmap bmp = Bitmap.createBitmap(crop, imageSideNN, imageSideNN, Bitmap.Config.ARGB_8888);
-			context.SetProtoImage(saveproto, bmp);
-			saveproto = -1;
-		}
-		float min = 2;
-		float max = 0;
-		int best = -1;
-		for (int i = 0; i < 5; i++) {
-			if (protos[i] != null) {
-				float d = distance(protos[i], percentages);
-				if (d > max) max = d;
-				if (d < min) {
-					best = i;
-					min = d;
-				}
-			}
-		}
-		context.ProtoFound(best, min, max);
+		MyTaskParams params = new MyTaskParams(data, mCamera, nativeAPI);
+		CStartProcess csp = new CStartProcess();
+		csp.execute(params);
 	}
 
 }
