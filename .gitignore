@@ -105,3 +105,13 @@ crashlytics-build.properties
 *.o
 
 *.d
+
+*.so
+
+*.so
+
+*.a
+
+*.o
+
+*.d
