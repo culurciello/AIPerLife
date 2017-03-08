@@ -150,8 +150,6 @@ public class CreateGame extends Activity {
 
     }
 
-
-
     /**
      * 	Class that controls Camera View
      */
@@ -198,6 +196,7 @@ public class CreateGame extends Activity {
 
             // stop preview before making changes
             try {
+                mCamera.setPreviewCallback(null);
                 mCamera.stopPreview();
             } catch (Exception e) {
                 // ignore: tried to stop a non-existent preview
@@ -220,8 +219,6 @@ public class CreateGame extends Activity {
 
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
-            // TODO Auto-generated method stub
-            // The Surface has been created, now tell the camera where to draw the preview.
             try {
                 mCamera.setPreviewDisplay(holder);
                 mCamera.startPreview();
@@ -240,7 +237,10 @@ public class CreateGame extends Activity {
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
-            // TODO Auto-generated method stub
+            mCamera.setPreviewCallback(null);
+            mCamera.stopPreview();
+            mCamera.release();
+            mCamera = null;
         }
 
         LiveMode liveMode = new LiveMode(CreateGame.this);
@@ -293,9 +293,6 @@ public class CreateGame extends Activity {
         };
     }
 
-    /**
-     *
-     */
     Button.OnClickListener protosOnClickListener = new Button.OnClickListener() {
         @Override
         public void onClick(View v) {
