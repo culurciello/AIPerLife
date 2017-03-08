@@ -12,7 +12,9 @@ public class LiveMode{
 	int imageSideNN = 128; // input image size for neural network
 	int[] crop;
 	float[][] protos = new float[5][];
+	float fps = 0;
 	int saveproto = -1;
+	CStartProcess csp;
 
 	/**
 	 *
@@ -84,7 +86,9 @@ public class LiveMode{
 			Camera.Parameters parameters = mCamera.getParameters();
 			int width = parameters.getPreviewSize().width;
 			int height = parameters.getPreviewSize().height;
+			long tm = android.os.SystemClock.uptimeMillis();
 			float percentages[] = nativeAPI.processImage(data, width, height, crop);
+			fps = (1000f / (android.os.SystemClock.uptimeMillis() - tm));
 			return percentages;
 		}
 
@@ -108,7 +112,8 @@ public class LiveMode{
 					}
 				}
 			}
-			context.ProtoFound(best, min, max);
+			context.ProtoFound(best, min, max, fps);
+			csp = null;
 		}
 	}
 
@@ -120,8 +125,10 @@ public class LiveMode{
 	 */
 	public void startProcess(byte[] data, Camera mCamera, NativeProcessor nativeAPI) {
 
+		if(csp != null)
+			return;
 		MyTaskParams params = new MyTaskParams(data, mCamera, nativeAPI);
-		CStartProcess csp = new CStartProcess();
+		csp = new CStartProcess();
 		csp.execute(params);
 	}
 

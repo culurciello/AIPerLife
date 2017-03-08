@@ -247,24 +247,13 @@ public class CreateGame extends Activity {
 
         @Override
         public void onPreviewFrame(byte[] data, Camera arg1) {
-            // TODO Auto-generated method stub
-            //System.err.println("I came here");
-            long tm = android.os.SystemClock.uptimeMillis();
-            if(prevtm > 0)
-                CreateGame.this.showFPS(1000f / (tm - prevtm));
-            prevtm = tm;
             if(recording) {
                 liveMode.startProcess(data, mCamera, nativeAPI);
             }
         }
     }
 
-    public void showFPS(float fps)
-    {
-        fpsField.setText(String.format("%.2f", fps) + " fps");
-    }
-
-    public void ProtoFound(int idx, float distance, float max)
+    public void ProtoFound(int idx, float distance, float max, float fps)
     {
         float threshold = (float) 0.5;
         if(distance < max*threshold)
@@ -275,6 +264,7 @@ public class CreateGame extends Activity {
             resultField1.setText("");
             resultField2.setText("");
         }
+        fpsField.setText(String.format("%.2f", fps) + " fps");
     }
 
     public void SaveProto(int idx)
